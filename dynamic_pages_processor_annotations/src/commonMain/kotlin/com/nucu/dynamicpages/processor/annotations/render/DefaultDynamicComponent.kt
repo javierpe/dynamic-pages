@@ -1,4 +1,4 @@
-package com.nucu.dynamicpages.processor.annotations
+package com.nucu.dynamicpages.processor.annotations.render
 
 @Retention(AnnotationRetention.SOURCE)
 @Target(AnnotationTarget.CLASS)

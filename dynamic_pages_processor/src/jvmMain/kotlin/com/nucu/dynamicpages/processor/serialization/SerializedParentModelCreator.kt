@@ -4,11 +4,11 @@ import com.google.devtools.ksp.processing.CodeGenerator
 import com.google.devtools.ksp.processing.Dependencies
 import com.google.devtools.ksp.processing.KSPLogger
 import com.google.devtools.ksp.symbol.KSClassDeclaration
-import com.nucu.dynamicpages.processor.annotations.RenderModel
+import com.nucu.dynamicpages.processor.annotations.render.RenderModel
 import com.nucu.ksp.common.definitions.DefinitionNames
-import com.nucu.ksp.common.extensions.camelCaseToSnakeCase
 import com.nucu.ksp.common.extensions.create
 import com.nucu.ksp.common.extensions.isDataClass
+import com.nucu.ksp.common.extensions.makeSemanticName
 import com.squareup.kotlinpoet.AnnotationSpec
 import com.squareup.kotlinpoet.FileSpec
 import com.squareup.kotlinpoet.FunSpec
@@ -50,7 +50,7 @@ class SerializedParentModelCreator(
 
                     fileSpec.addType(
                         create(
-                            semanticName = ksAnnotated.simpleName.getShortName().camelCaseToSnakeCase(),
+                            semanticName = ksAnnotated.simpleName.getShortName().makeSemanticName(),
                             resourceTypeName = ksAnnotated.asType(emptyList()).toTypeName(),
                             serialName = arg,
                             dynamicPage = dynamicPage

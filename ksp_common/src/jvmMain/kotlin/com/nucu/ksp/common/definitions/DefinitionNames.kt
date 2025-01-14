@@ -5,7 +5,7 @@ object DefinitionNames {
     /**
      * Package of all generated classes. Path: build -> generated -> ksp -> debug | release
      */
-    private const val PACKAGE_ROOT = "com.nucu.dynamicpages"
+    const val PACKAGE_ROOT = "com.nucu.dynamicpages"
 
     /**
      * Package of data layer
@@ -18,6 +18,11 @@ object DefinitionNames {
     const val PACKAGE_MAPPERS = "$PACKAGE_DATA.mappers"
 
     /**
+     * Package for DI.
+     */
+    const val PACKAGE_DI = "$PACKAGE_ROOT.di"
+
+    /**
      * Package of all data classes.
      */
     const val PACKAGE_MODELS = "$PACKAGE_DATA.models"
@@ -25,19 +30,14 @@ object DefinitionNames {
     const val PACKAGE_VISITORS = "$PACKAGE_DATA.visitors"
 
     /**
-     * Serializer class name of dynamic list models.
+     * Serializer class name of dynamic page models.
      */
     const val COMPONENT_SERIALIZER_FILE_NAME = "ComponentSerializer"
 
     /**
-     * All generated data models from Dynamic List responses.
+     * All generated data models from Dynamic Page responses.
      */
-    const val PARENT_MODELS_CATALOG_FILE_NAME = "ResponseModels"
-
-    /**
-     * Main Dynamic List response definition.
-     */
-    const val PARENT_MODEL_FILE_NAME = "DynamicListComponentResponse"
+    const val PARENT_MODELS_CATALOG_FILE_NAME = "DynamicPageResponseModels"
 
     /**
      * Mapper that transform all data classes that has Render types.
@@ -47,15 +47,20 @@ object DefinitionNames {
     /**
      * Create a visitor class for all renders that has a @Visitable annotation.
      */
-    const val VISITOR_CLASS_NAME = "DynamicListVisitorUseCase"
-
-    /**
-     * The paging engine use case
-     */
-    const val PAGINATOR_CLASS_NAME = "GetDynamicListPaginatorComponentUseCase"
+    const val VISITOR_CLASS_NAME = "DynamicPageVisitorUseCase"
 
     /**
      * Should be used to name any class to distinct it from other classes.
      */
-    const val VERTICAL_NAME = "vertical.name"
+    const val MODULE_PREFIX = "module.prefix"
+
+    const val DI_PLUGIN = "di.plugin"
+
+    const val PACKAGE_JAVAX_INJECT = "javax.inject.Inject"
+
+    const val PACKAGE_KOIN_FACTORY = "org.koin.core.annotation.Factory"
+
+    const val PACKAGE_KOIN_COMPONENT_SCAN = "org.koin.core.annotation.ComponentScan"
+
+    const val KOIN_MODULE_NAME = "DynamicPagesModule"
 }

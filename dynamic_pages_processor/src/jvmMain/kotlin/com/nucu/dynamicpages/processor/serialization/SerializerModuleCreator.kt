@@ -6,9 +6,9 @@ import com.google.devtools.ksp.processing.Resolver
 import com.google.devtools.ksp.symbol.KSAnnotated
 import com.google.devtools.ksp.symbol.KSClassDeclaration
 import com.google.devtools.ksp.validate
-import com.nucu.dynamicpages.processor.annotations.DefaultDynamicComponent
-import com.nucu.dynamicpages.processor.annotations.DynamicPage
-import com.nucu.dynamicpages.processor.annotations.RenderModel
+import com.nucu.dynamicpages.processor.annotations.render.DefaultDynamicComponent
+import com.nucu.dynamicpages.processor.annotations.render.DynamicPage
+import com.nucu.dynamicpages.processor.annotations.render.RenderModel
 import com.nucu.ksp.common.contract.ModuleCreatorContract
 import com.nucu.ksp.common.extensions.getDependencies
 import com.nucu.ksp.common.extensions.getValidSymbols

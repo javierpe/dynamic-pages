@@ -1,7 +1,7 @@
 package com.nucu.dynamicpages.test
 
-import com.nucu.dynamicpages.processor.annotations.DefaultDynamicComponent
-import com.nucu.dynamicpages.processor.annotations.DynamicPage
+import com.nucu.dynamicpages.processor.annotations.render.DefaultDynamicComponent
+import com.nucu.dynamicpages.processor.annotations.render.DynamicPage
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.Polymorphic
 import kotlinx.serialization.SerialName

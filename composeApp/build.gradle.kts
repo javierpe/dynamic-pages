@@ -72,6 +72,11 @@ kotlin {
             implementation(libs.androidx.lifecycle.runtime.compose)
             implementation(libs.kotlinx.serialization)
 
+            // Dependency injection
+            implementation(libs.koin.compose)
+            implementation(libs.koin.core)
+            api(libs.koin.annotations)
+
             implementation(project(":dynamic_pages_processor_annotations"))
         }
         desktopMain.dependencies {
@@ -130,16 +135,19 @@ compose.desktop {
 
 ksp {
     arg("render.mapper.engine", "true")
-    arg("vertical.name", "Home")
-    //arg("include.default.serializer", "false")
+    arg("module.prefix", "Home")
+    arg("di.plugin", "koin")
+    arg("include.default.serializer", "true")
+
+    arg("KOIN_CONFIG_CHECK","false")
+    arg("KOIN_USE_COMPOSE_VIEWMODEL","true")
 }
 
 dependencies {
     add("kspCommonMainMetadata", project(":dynamic_pages_processor"))
-    /*add("kspAndroid", project(":dynamic_pages_processor"))
-    add("kspIosX64", project(":dynamic_pages_processor"))
-    add("kspIosArm64", project(":dynamic_pages_processor"))
-    add("kspIosSimulatorArm64", project(":dynamic_pages_processor"))*/
+    add("kspCommonMainMetadata", project(":dynamic_pages_mapper_processor"))
+
+    add("kspCommonMainMetadata", libs.koin.ksp.compiler)
 }
 
 project.tasks.withType(KotlinCompilationTask::class.java).configureEach {

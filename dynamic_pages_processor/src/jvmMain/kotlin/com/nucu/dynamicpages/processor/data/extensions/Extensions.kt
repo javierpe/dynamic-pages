@@ -2,7 +2,7 @@ package com.nucu.dynamicpages.processor.data.extensions
 
 import com.google.devtools.ksp.symbol.KSClassDeclaration
 import com.google.devtools.ksp.symbol.KSType
-import com.nucu.dynamicpages.processor.annotations.RenderModel
+import com.nucu.dynamicpages.processor.annotations.render.RenderModel
 import com.nucu.ksp.common.extensions.camelCaseToSnakeCase
 import com.nucu.ksp.common.extensions.semanticName
 

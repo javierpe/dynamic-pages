@@ -6,7 +6,7 @@ import com.google.devtools.ksp.symbol.KSClassDeclaration
 import com.nucu.dynamicpages.processor.data.extensions.getRenderTypesNames
 import com.nucu.ksp.common.definitions.DefinitionNames
 import com.nucu.ksp.common.extensions.create
-import com.nucu.ksp.common.extensions.getVerticalName
+import com.nucu.ksp.common.extensions.getModulePrefixName
 import com.nucu.ksp.common.extensions.includeDefaultSerializer
 import com.squareup.kotlinpoet.CodeBlock
 import com.squareup.kotlinpoet.FileSpec
@@ -25,7 +25,7 @@ class ComponentSerializerCreator(
         validatedSymbols: List<KSClassDeclaration>,
         dependencies: Dependencies
     ) {
-        val fileName = options.getVerticalName() + DefinitionNames.COMPONENT_SERIALIZER_FILE_NAME
+        val fileName = options.getModulePrefixName() + DefinitionNames.COMPONENT_SERIALIZER_FILE_NAME
         val includeDefaultSerializer = options.includeDefaultSerializer()
 
         val fileSpec = FileSpec.builder(

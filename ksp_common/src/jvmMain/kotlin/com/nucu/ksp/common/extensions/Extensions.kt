@@ -9,6 +9,7 @@ import com.google.devtools.ksp.symbol.KSType
 import com.google.devtools.ksp.symbol.KSValueArgument
 import com.google.devtools.ksp.validate
 import com.nucu.ksp.common.definitions.DefinitionNames
+import com.nucu.ksp.common.model.DependencyInjectionPlugin
 import com.squareup.kotlinpoet.AnnotationSpec
 import com.squareup.kotlinpoet.ClassName
 import com.squareup.kotlinpoet.FunSpec
@@ -28,7 +29,7 @@ fun KSAnnotated.isValid(): Boolean {
  * Transform KSClassDeclaration name to semantic name, e.g. BannerResponse
  */
 fun KSClassDeclaration.semanticName(): String {
-    return makeSemanticName(this.simpleName.asString())
+    return this.simpleName.asString().makeSemanticName()
 }
 
 /**
@@ -47,7 +48,7 @@ fun String.camelCaseToSnakeCase(withSemanticName: Boolean = true): String {
         it.value.last().uppercase()
     }.replaceFirstChar { it.uppercase() }
     return if (withSemanticName) {
-        makeSemanticName(name)
+        name.makeSemanticName()
     } else {
         name
     }
@@ -56,8 +57,8 @@ fun String.camelCaseToSnakeCase(withSemanticName: Boolean = true): String {
 /**
  * Concat name with Response to make semantic name.
  */
-private fun makeSemanticName(name: String): String {
-    return "${name}Parent"
+fun String.makeSemanticName(): String {
+    return "${this}Parent"
 }
 
 /**
@@ -132,10 +133,19 @@ fun KSDeclaration.isListType(): Boolean {
 }
 
 /**
+ * Return value of module prefix name parameter.
+ */
+fun Map<String, String>.getModulePrefixName(): String {
+    return getOrDefault(DefinitionNames.MODULE_PREFIX, "")
+}
+
+/**
  * Return value of vertical name parameter.
  */
-fun Map<String, String>.getVerticalName(): String {
-    return getOrDefault(DefinitionNames.VERTICAL_NAME, "")
+fun Map<String, String>.getDependencyInjectionPlugin(): DependencyInjectionPlugin {
+    return DependencyInjectionPlugin.entries.firstOrNull {
+        it.type == getOrDefault(DefinitionNames.DI_PLUGIN, DependencyInjectionPlugin.NONE.type)
+    } ?: DependencyInjectionPlugin.NONE
 }
 
 fun Map<String, String>.includeDefaultSerializer(): Boolean {
