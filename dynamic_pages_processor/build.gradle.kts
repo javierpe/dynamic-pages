@@ -33,6 +33,7 @@ afterEvaluate {
                 name = "release",
                 type = MavenPublication::class
             ) {
+                from(components["kotlin"])
                 groupId = "com.github.nucu"
                 artifactId = "dynamic-pages"
                 version = "1.0.1"
