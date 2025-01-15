@@ -1,7 +1,6 @@
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.ksp)
-    id("maven-publish")
 }
 
 kotlin {
@@ -26,14 +25,10 @@ kotlin {
     }
 }
 
-publishing {
-    publications {
-        create<MavenPublication>("kotlin") {
-            groupId = project.group.toString()
-            artifactId = "dynamic-pages-processor"
-            version = project.version.toString()
-
-            from(components["kotlin"])
-        }
+tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
+    kotlinOptions {
+        freeCompilerArgs += listOf("-Xcontext-receivers")
     }
 }
+
+apply(from = file("../gradle/publish.gradle.kts"))
