@@ -39,14 +39,14 @@ kotlin {
     linuxArm64()
 }
 
-afterEvaluate {
-    publishing {
-        publications {
-            withType<MavenPublication> {
-                groupId = "com.github.nucu"
-                artifactId = "dynamic-pages-annotations"
-                version = "1.0.1"
-            }
+publishing {
+    publications {
+        create<MavenPublication>("kotlin") {
+            groupId = project.group.toString()
+            artifactId = "dynamic-pages-processor-annotations"
+            version = project.version.toString()
+
+            from(components["kotlin"])
         }
     }
 }

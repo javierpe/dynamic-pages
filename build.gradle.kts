@@ -8,3 +8,8 @@ plugins {
     alias(libs.plugins.kotlinMultiplatform) apply false
     alias(libs.plugins.jetbrains.kotlin.jvm) apply false
 }
+
+allprojects {
+    group = "com.github.nucu"
+    version = "1.0.1"
+}

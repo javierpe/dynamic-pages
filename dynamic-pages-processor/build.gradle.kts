@@ -10,8 +10,8 @@ kotlin {
     }
     sourceSets {
         commonMain.dependencies {
-            api(project(":dynamic_pages_processor_annotations"))
-            implementation(project(":ksp_common"))
+            api(project(":dynamic-pages-processor-annotations"))
+            implementation(project(":ksp-common"))
 
             implementation(libs.kotlin.coroutines.core)
             implementation(libs.kotlin.reflect)
@@ -26,20 +26,14 @@ kotlin {
     }
 }
 
-afterEvaluate {
-    publishing {
-        publications {
-            create(
-                name = "release",
-                type = MavenPublication::class
-            ) {
-                from(components["kotlin"])
-                groupId = "com.github.nucu"
-                artifactId = "dynamic-pages"
-                version = "1.0.1"
-            }
+publishing {
+    publications {
+        create<MavenPublication>("kotlin") {
+            groupId = project.group.toString()
+            artifactId = "dynamic-pages-processor"
+            version = project.version.toString()
+
+            from(components["kotlin"])
         }
     }
 }
-
-

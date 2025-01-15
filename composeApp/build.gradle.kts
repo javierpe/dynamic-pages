@@ -1,5 +1,4 @@
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
-import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.targets.js.webpack.KotlinWebpackConfig
@@ -77,7 +76,7 @@ kotlin {
             implementation(libs.koin.core)
             api(libs.koin.annotations)
 
-            implementation(project(":dynamic_pages_processor_annotations"))
+            implementation(project(":dynamic-pages-processor-annotations"))
         }
         desktopMain.dependencies {
             implementation(compose.desktop.currentOs)
@@ -144,8 +143,8 @@ ksp {
 }
 
 dependencies {
-    add("kspCommonMainMetadata", project(":dynamic_pages_processor"))
-    add("kspCommonMainMetadata", project(":dynamic_pages_mapper_processor"))
+    add("kspCommonMainMetadata", project(":dynamic-pages-processor"))
+    add("kspCommonMainMetadata", project(":dynamic-pages-mapper-processor"))
 
     add("kspCommonMainMetadata", libs.koin.ksp.compiler)
 }

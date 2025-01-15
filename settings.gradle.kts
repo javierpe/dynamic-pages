@@ -31,7 +31,7 @@ dependencyResolutionManagement {
 }
 
 include(":composeApp")
-include(":dynamic_pages_processor_annotations")
-include(":dynamic_pages_processor")
-include(":ksp_common")
-include(":dynamic_pages_mapper_processor")
+include(":dynamic-pages-processor-annotations")
+include(":dynamic-pages-processor")
+include(":ksp-common")
+include(":dynamic-pages-mapper-processor")
