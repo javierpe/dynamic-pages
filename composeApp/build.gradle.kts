@@ -76,7 +76,7 @@ kotlin {
             implementation(libs.koin.core)
             api(libs.koin.annotations)
 
-            implementation(project(":dynamic-pages-processor-annotations"))
+            api(project(":dynamic-pages-processor-annotations"))
         }
         desktopMain.dependencies {
             implementation(compose.desktop.currentOs)
