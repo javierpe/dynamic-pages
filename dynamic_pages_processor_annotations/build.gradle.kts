@@ -2,6 +2,7 @@ import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
 
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
+    id("maven-publish")
 }
 
 kotlin {
@@ -36,4 +37,19 @@ kotlin {
     mingwX64()
     linuxX64()
     linuxArm64()
+}
+
+afterEvaluate {
+    publishing {
+        publications {
+            create(
+                name = "release",
+                type = MavenPublication::class
+            ) {
+                groupId = "com.github.nucu"
+                artifactId = "dynamic-pages-annotations"
+                version = "1.0"
+            }
+        }
+    }
 }
