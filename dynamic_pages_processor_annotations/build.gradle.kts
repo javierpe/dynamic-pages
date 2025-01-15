@@ -1,5 +1,4 @@
 import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompilationTask
 
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
@@ -40,14 +39,10 @@ kotlin {
     linuxArm64()
 }
 
-project.afterEvaluate {
+afterEvaluate {
     publishing {
         publications {
-            create(
-                name = "release",
-                type = MavenPublication::class
-            ) {
-                from(components["kotlin"])
+            withType<MavenPublication> {
                 groupId = "com.github.nucu"
                 artifactId = "dynamic-pages-annotations"
                 version = "1.0.1"

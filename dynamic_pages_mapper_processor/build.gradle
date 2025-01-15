@@ -25,14 +25,14 @@ kotlin {
     }
 }
 
-project.afterEvaluate {
+afterEvaluate {
     publishing {
         publications {
             create("release", MavenPublication) {
                 from(components["kotlin"])
                 groupId = "com.github.nucu"
                 artifactId = "dynamic-pages-mapper"
-                version = "1.0"
+                version = "1.0.1"
             }
         }
     }
