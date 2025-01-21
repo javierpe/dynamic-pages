@@ -1,7 +1,9 @@
+import com.vanniktech.maven.publish.SonatypeHost
 import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
 
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
+    alias(libs.plugins.vanniktech.mavenPublish)
 }
 
 kotlin {
@@ -38,4 +40,36 @@ kotlin {
     linuxArm64()
 }
 
-apply(from = file("../gradle/publish.gradle.kts"))
+mavenPublishing {
+    publishToMavenCentral(SonatypeHost.CENTRAL_PORTAL)
+
+    signAllPublications()
+
+    coordinates("dynamic-pages", "processor-annotations", "1.0.0")
+
+    pom {
+        name = "Dynamic Pages Annotations"
+        description = "Dynamic Pages Annotations"
+        inceptionYear = "2025"
+        url = "https://github.com/javierpe/dynamic-pages"
+        licenses {
+            license {
+                name = "The Apache License, Version 2.0"
+                url = "https://www.apache.org/licenses/LICENSE-2.0.txt"
+                distribution = "https://www.apache.org/licenses/LICENSE-2.0.txt"
+            }
+        }
+        developers {
+            developer {
+                id = "javierpe"
+                name = "Francisco Peña"
+                url = "https://github.com/javierpe/"
+            }
+        }
+        scm {
+            url = "https://github.com/javierpe/dynamic-pages"
+            connection = "scm:git:git://github.com/javierpe/dynamic-pages"
+            developerConnection = "scm:git:ssh://git@github.com/javierpe/dynamic-pages.git"
+        }
+    }
+}
