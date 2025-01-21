@@ -9,18 +9,17 @@ kotlin {
     }
     sourceSets {
         commonMain.dependencies {
-            api(project(":dynamic-pages-processor-annotations"))
-            implementation(project(":ksp-common"))
-
             implementation(libs.kotlin.coroutines.core)
             implementation(libs.kotlin.reflect)
-            implementation(libs.ksp.api)
-            implementation(libs.kotlin.poet)
-            implementation(libs.kotlin.poet.ksp)
             implementation(libs.kotlinx.serialization)
         }
         jvmMain.dependencies {
+            implementation(project(":dynamic-pages-processor-annotations"))
+            implementation(project(":ksp-common"))
+
             implementation(libs.ksp.api)
+            implementation(libs.kotlin.poet)
+            implementation(libs.kotlin.poet.ksp)
         }
     }
 }
