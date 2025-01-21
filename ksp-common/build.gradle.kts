@@ -10,13 +10,12 @@ kotlin {
     }
 
     sourceSets {
-        commonMain.dependencies {
+        jvmMain.dependencies {
             implementation(libs.kotlin.poet)
             implementation(libs.ksp.api)
             implementation(libs.kotlin.poet.ksp)
         }
-        jvmMain.dependencies {
-            implementation(libs.ksp.api)
-        }
     }
 }
+
+apply(from = file("../gradle/publish.gradle.kts"))
