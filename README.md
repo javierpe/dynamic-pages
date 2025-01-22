@@ -24,20 +24,15 @@ Here are the current available project versions:
 
 ### Dynamic Pages Annotations
 ```bash
-  implementation("io.github.javierpe:processor-annotations:<version>")
+implementation("io.github.javierpe:processor-annotations:<version>")
 ```
 
 ### Dynamic Pages Processor
 ```bash
-implementation("io.github.javierpe:processor:<version>")
+ksp("io.github.javierpe:processor:<version>")
 ```
 
 ### Dynamic Pages Mapper Processor
 ```bash
-implementation("io.github.javierpe:mapper-processor:<version>")
-```
-
-### Dynamic pages Common (Required)
-```bash
-implementation("io.github.javierpe:common:<version>")
+ksp("io.github.javierpe:mapper-processor:<version>")
 ```
