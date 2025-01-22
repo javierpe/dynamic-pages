@@ -8,7 +8,7 @@
 
 # What is Dynamic Pages?
  
-This KSP annotation processor is designed to simplify data model transformation and clarify responsibilities in Android applications, especially useful when working with Dynamic Pages.
+This KSP processor is designed to simplify data model transformation and clarify responsibilities in Android applications, especially useful when working with Dynamic Pages. It is compatible with KMP and Compose Multiplatform.
 
 # 🎯 Objective
 The processor helps to:
