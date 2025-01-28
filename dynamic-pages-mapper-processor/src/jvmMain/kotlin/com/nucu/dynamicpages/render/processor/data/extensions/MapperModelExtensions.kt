@@ -2,6 +2,7 @@ package com.nucu.dynamicpages.render.processor.data.extensions
 
 import com.google.devtools.ksp.innerArguments
 import com.google.devtools.ksp.symbol.KSClassDeclaration
+import com.google.devtools.ksp.symbol.KSDeclaration
 import com.google.devtools.ksp.symbol.KSPropertyDeclaration
 import com.google.devtools.ksp.symbol.KSType
 import com.google.devtools.ksp.symbol.KSTypeAlias
@@ -15,6 +16,7 @@ private const val PACKAGE_OF_LAZY_MAPPER = "com.nucu.dynamicpages.render.process
 /**
  * Map any property between origin model to new model.
  */
+@Suppress("LongParameterList")
 fun MapperModel.mapProp(
     currentClassName: String,
     validatedSymbols: List<KSClassDeclaration>,
@@ -41,7 +43,7 @@ fun MapperModel.mapProp(
         mapToLazyMapper(onAddPackage, onInjectInstance)
     } else {
         // Property can not resolve by any method, maybe you can use @Rule to solve it.
-        throw IllegalStateException(
+        error(
             "Param $propertyDeclaration is null in origin but ${propertyDeclaration.parentDeclaration} is required. " +
                 "Use a @Rule annotation to resolve it."
         )
@@ -95,7 +97,7 @@ private fun MapperModel.mapToDefaults(deepNode: String = ""): String {
         }
     } else if (deepNode.isNotEmpty()) {
         val prop = consumerType.extractPropFromDeepNode(deepNode, propertyDeclaration.simpleName.getShortName())
-        if (prop?.isNullable() == true) {
+        if (prop?.isNullable() == true || prop == null) {
             buildString {
                 append("${consumerType.toParameterName()}.$deepNode.$propertyDeclaration")
                 append(propertyDeclaration.mapTypeToDefaults(propertyDeclaration.isNullable()))
@@ -139,7 +141,7 @@ private fun KSType.extractLastProperty(deepNode: String): DeepNodeProperty {
                 it.simpleName.getShortName() == prop
             }
             if (propertyDeclaration == null) {
-                throw IllegalStateException("Sequence of $prop contains no element matching the predicate")
+                error("Sequence of $prop contains no element matching the predicate")
             }
             if (!hasNullableProp) {
                 hasNullableProp = propertyDeclaration.isNullable()
@@ -158,18 +160,21 @@ private fun KSType.extractLastProperty(deepNode: String): DeepNodeProperty {
 /**
  * Extract prop from a deep node.
  */
-private fun KSType.extractPropFromDeepNode(mapFromAll: String, destinationPropSimpleName: String): KSPropertyDeclaration? {
+private fun KSType.extractPropFromDeepNode(
+    mapFromAll: String,
+    destinationPropSimpleName: String
+): KSPropertyDeclaration? {
 
     var lastProps: Sequence<KSPropertyDeclaration> = emptySequence()
-    var lastDeclaration = declaration
+    var lastDeclaration: KSDeclaration? = declaration
 
-    mapFromAll.split(".").asSequence().forEach { prop ->
-        lastDeclaration = (lastDeclaration as KSClassDeclaration).getAllProperties().first {
+    mapFromAll.takeIf { it.isNotEmpty() }?.split(".")?.asSequence()?.forEach { prop ->
+        lastDeclaration = (lastDeclaration as? KSClassDeclaration)?.getAllProperties()?.firstOrNull {
             it.simpleName.getShortName() == prop
-        }.type.resolve().declaration
+        }?.type?.resolve()?.declaration
 
-        lastProps = (lastDeclaration as KSClassDeclaration).getAllProperties()
-    }
+        lastProps = (lastDeclaration as? KSClassDeclaration)?.getAllProperties().orEmpty()
+    } ?: mapFromAll
 
     return lastProps.firstOrNull { it.simpleName.getShortName() == destinationPropSimpleName }
 }
@@ -252,13 +257,13 @@ private fun MapperModel.mapToMapperList(): String {
         }
 
         if (finalOriginSentence == null) {
-            throw IllegalStateException("Please change name of param ${propertyDeclaration.simpleName.getShortName()} to the same name of origin!")
+            error("Please change name of param ${propertyDeclaration.simpleName.getShortName()} to the same name of origin!")
         }
 
         return "${consumerType.toParameterName()}.$finalOriginSentence.map{ ${parentMapper.toParameterName()}Mapper.mapTo$name(it) }$defaults"
     } else {
         // The list property type does not have a mapper so it cannot be mapped.
-        throw IllegalStateException("The list of $name has not a mapper. Please set @Mapper annotation for $name.")
+        error("The list of $name has not a mapper. Please set @Mapper annotation for $name.")
     }
 }
 
@@ -266,7 +271,11 @@ private fun MapperModel.mapToMapperList(): String {
  * Insert rule mapper.
  */
 private fun MapperModel.mapToRule(deepNode: String = ""): String {
-    val fromProp = propertyDeclaration.annotations.filteredByRuleAnnotation().first().arguments.filterByFromProp().firstOrNull()
+    val fromProp = propertyDeclaration.annotations
+        .filteredByRuleAnnotation()
+        .first()
+        .arguments
+        .filterByFromProp().firstOrNull()
     val processedProp =
         processFromParam(
             chain = fromProp?.value?.toString().orEmpty(), consumerType.declaration as KSClassDeclaration,
@@ -274,7 +283,8 @@ private fun MapperModel.mapToRule(deepNode: String = ""): String {
         )
     val param = if (fromProp != null) {
         if (deepNode.isNotEmpty() && processedProp.isNotEmpty()) {
-            // Processes a deep node defined in the @Mapper annotation with a property chain defined in the @Rule annotation.
+            // Processes a deep node defined in the @Mapper
+            // annotation with a property chain defined in the @Rule annotation.
             ".$deepNode.$processedProp"
         } else if (processedProp.isNotEmpty()) {
             // It only processes a property string defined in the @Rule annotation.

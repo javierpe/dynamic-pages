@@ -8,11 +8,16 @@ import com.google.devtools.ksp.symbol.KSAnnotated
 import com.nucu.ksp.common.contract.ModuleCreatorContract
 import com.nucu.ksp.common.definitions.DefinitionNames
 import com.nucu.ksp.common.extensions.create
+import com.nucu.ksp.common.extensions.getModulePrefixName
+import com.nucu.ksp.common.extensions.logFinishProcess
+import com.nucu.ksp.common.extensions.logStartProcess
 import com.squareup.kotlinpoet.AnnotationSpec
 import com.squareup.kotlinpoet.ClassName
 import com.squareup.kotlinpoet.CodeBlock
 import com.squareup.kotlinpoet.FileSpec
 import com.squareup.kotlinpoet.TypeSpec
+
+private const val PROCESSOR_NAME = "KoinModuleCreator"
 
 class KoinModuleCreator(
     private val codeGenerator: CodeGenerator,
@@ -21,15 +26,17 @@ class KoinModuleCreator(
 ) : ModuleCreatorContract {
 
     override suspend fun start(resolver: Resolver): List<KSAnnotated> {
+        logger.logStartProcess(PROCESSOR_NAME)
+        val name = options.getModulePrefixName() + DefinitionNames.KOIN_MODULE_NAME
 
         val fileSpec = FileSpec.builder(
             packageName = DefinitionNames.PACKAGE_DI,
-            fileName = DefinitionNames.KOIN_MODULE_NAME
+            fileName = name
         )
 
         fileSpec.apply {
             addType(
-                TypeSpec.classBuilder(DefinitionNames.KOIN_MODULE_NAME)
+                TypeSpec.classBuilder(name)
                     .apply {
                         addAnnotation(
                             AnnotationSpec
@@ -43,6 +50,7 @@ class KoinModuleCreator(
         }
 
         fileSpec.create(codeGenerator, Dependencies.ALL_FILES)
+        logger.logFinishProcess()
 
         return emptyList()
     }
