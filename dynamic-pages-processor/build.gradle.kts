@@ -32,7 +32,7 @@ mavenPublishing {
 
     signAllPublications()
 
-    coordinates("io.github.javierpe", "processor", "1.0.3")
+    coordinates("io.github.javierpe", "processor", libs.versions.dynamicPages.get())
 
     pom {
         name = "Dynamic Pages Processor"

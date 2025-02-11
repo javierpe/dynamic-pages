@@ -15,12 +15,15 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import com.nucu.dynamicpages.data.mappers.HomeContactResponseMapper
+import com.nucu.dynamicpages.di.HomeDynamicPagesModule
+import com.nucu.dynamicpages.test.model.ContactResponse
+import com.nucu.dynamicpages.test.model.PhoneResponse
 import com.nucu.dynamicpages.test.rule.MainModule
 import com.nucu.dynamicpages.test.rule.NameRule
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.KoinApplication
 import org.koin.compose.koinInject
-import org.koin.ksp.generated.defaultModule
 import org.koin.ksp.generated.module
 
 @Composable
@@ -29,9 +32,9 @@ fun App() {
     MaterialTheme {
         KoinApplication(
             application = {
-                defaultModule()
                 modules(
-                    MainModule().module
+                    MainModule().module,
+                    HomeDynamicPagesModule().module
                 )
             }
         ) {
@@ -43,6 +46,8 @@ fun App() {
 @Composable
 fun AppContent(modifier: Modifier = Modifier) {
     val rule = koinInject<NameRule>()
+    val mapper = koinInject<HomeContactResponseMapper>()
+
     var showContent by remember { mutableStateOf(false) }
     Column(modifier, horizontalAlignment = Alignment.CenterHorizontally) {
         Button(onClick = { showContent = !showContent }) {
@@ -51,7 +56,14 @@ fun AppContent(modifier: Modifier = Modifier) {
         AnimatedVisibility(showContent) {
             val greeting = remember { mutableStateOf("Loading...") }
             LaunchedEffect(Unit) {
-                greeting.value = rule.map("Hello")
+                greeting.value = mapper.mapToPhoneUi(
+                    contactResponse = ContactResponse(
+                        name = "Francisco",
+                        phone = PhoneResponse(
+                            country = "Mexico"
+                        )
+                    )
+                ).toString()
             }
             Column(Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
                 Text("Compose: ${greeting.value}")

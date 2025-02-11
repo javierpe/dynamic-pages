@@ -25,7 +25,7 @@ mavenPublishing {
 
     signAllPublications()
 
-    coordinates("io.github.javierpe", "common", "1.0.3")
+    coordinates("io.github.javierpe", "common", libs.versions.dynamicPages.get())
 
     pom {
         name = "Dynamic Pages Common"
