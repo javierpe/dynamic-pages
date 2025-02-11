@@ -62,5 +62,7 @@ object DefinitionNames {
 
     const val PACKAGE_KOIN_COMPONENT_SCAN = "org.koin.core.annotation.ComponentScan"
 
+    const val PACKAGE_KOIN_MODULE = "org.koin.core.annotation.Module"
+
     const val KOIN_MODULE_NAME = "DynamicPagesModule"
 }

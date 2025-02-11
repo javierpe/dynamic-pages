@@ -28,7 +28,7 @@ mavenPublishing {
 
     signAllPublications()
 
-    coordinates("io.github.javierpe", "mapper-processor", "1.0.3")
+    coordinates("io.github.javierpe", "mapper-processor", libs.versions.dynamicPages.get())
 
     pom {
         name = "Dynamic Pages Mapper Processor"

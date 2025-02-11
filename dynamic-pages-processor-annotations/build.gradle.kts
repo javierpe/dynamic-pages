@@ -45,7 +45,7 @@ mavenPublishing {
 
     signAllPublications()
 
-    coordinates("io.github.javierpe", "processor-annotations", "1.0.3")
+    coordinates("io.github.javierpe", "processor-annotations", libs.versions.dynamicPages.get())
 
     pom {
         name = "Dynamic Pages Annotations"

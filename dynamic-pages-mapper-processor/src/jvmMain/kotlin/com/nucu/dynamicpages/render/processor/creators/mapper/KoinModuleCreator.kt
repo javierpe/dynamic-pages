@@ -38,11 +38,16 @@ class KoinModuleCreator(
             addType(
                 TypeSpec.classBuilder(name)
                     .apply {
-                        addAnnotation(
-                            AnnotationSpec
-                                .builder(ClassName.bestGuess(DefinitionNames.PACKAGE_KOIN_COMPONENT_SCAN))
-                                .addMember(CodeBlock.of("\"${DefinitionNames.PACKAGE_ROOT}\""))
-                                .build()
+                        addAnnotations(
+                            listOf(
+                                AnnotationSpec
+                                    .builder(ClassName.bestGuess(DefinitionNames.PACKAGE_KOIN_MODULE))
+                                    .build(),
+                                AnnotationSpec
+                                    .builder(ClassName.bestGuess(DefinitionNames.PACKAGE_KOIN_COMPONENT_SCAN))
+                                    .addMember(CodeBlock.of("\"${DefinitionNames.PACKAGE_ROOT}\""))
+                                    .build()
+                            )
                         )
                     }
                     .build()

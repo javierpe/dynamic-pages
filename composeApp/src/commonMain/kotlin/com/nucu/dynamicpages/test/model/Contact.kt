@@ -31,11 +31,11 @@ data class PhoneResponse(
 
 @Mapper(
     parent = ContactResponse::class,
-    deepNode = "phone?",
     ignoredByRule = PhoneIgnoreRule::class
 )
 data class PhoneUi(
-    val country: String
+    @LinkedFrom("phone?.country") val country: String,
+    val name: String
 )
 
 
