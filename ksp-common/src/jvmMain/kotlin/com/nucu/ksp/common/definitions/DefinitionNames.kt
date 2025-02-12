@@ -52,9 +52,18 @@ object DefinitionNames {
     /**
      * Should be used to name any class to distinct it from other classes.
      */
-    const val MODULE_PREFIX = "module.prefix"
+    const val MODULE_PREFIX = "DP_MODULE_PREFIX"
 
-    const val DI_PLUGIN = "di.plugin"
+    /**
+     * This key allows to create render mapper class.
+     */
+    const val ENGINE_KEY = "DP_RENDER_MAPPER_ENGINE"
+
+    const val KEY_DEFAULT_SERIALIZER = "DP_INCLUDE_DEFAULT_SERIALIZER"
+
+    const val KEY_INCLUDE_KOIN_MODULE = "DP_INCLUDE_KOIN_MODULE"
+
+    const val DI_PLUGIN = "DP_DI_PLUGIN"
 
     const val PACKAGE_JAVAX_INJECT = "javax.inject.Inject"
 

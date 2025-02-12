@@ -133,10 +133,11 @@ compose.desktop {
 }
 
 ksp {
-    arg("render.mapper.engine", "true")
-    arg("module.prefix", "Home")
-    arg("di.plugin", "koin")
-    arg("include.default.serializer", "true")
+    arg("DP_RENDER_MAPPER_ENGINE", "true")
+    arg("DP_MODULE_PREFIX", "Home")
+    arg("DP_DI_PLUGIN", "koin")
+    arg("DP_INCLUDE_DEFAULT_SERIALIZER", "true")
+    arg("DP_INCLUDE_KOIN_MODULE", "true")
 
     arg("KOIN_CONFIG_CHECK","false")
     arg("KOIN_USE_COMPOSE_VIEWMODEL","true")

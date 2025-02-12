@@ -7,7 +7,9 @@ import com.google.devtools.ksp.symbol.KSAnnotated
 import com.nucu.dynamicpages.render.processor.creators.mapper.KoinModuleCreator
 import com.nucu.dynamicpages.render.processor.creators.mapper.MapperCreator
 import com.nucu.dynamicpages.render.processor.creators.mapper.RenderMapperCreator
+import com.nucu.ksp.common.definitions.DefinitionNames.ENGINE_KEY
 import com.nucu.ksp.common.extensions.getDependencyInjectionPlugin
+import com.nucu.ksp.common.extensions.includeKoinModule
 import com.nucu.ksp.common.extensions.logEndProcessor
 import com.nucu.ksp.common.extensions.logStartProcessor
 import com.nucu.ksp.common.model.DependencyInjectionPlugin
@@ -17,11 +19,6 @@ import kotlin.time.measureTime
 import kotlin.time.toJavaDuration
 
 private const val PROCESSOR_NAME = "Mapper Processor"
-
-/**
- * This key allows to create render mapper class.
- */
-private const val ENGINE_KEY = "render.mapper.engine"
 
 internal class MapperProcessor(
     private val logger: KSPLogger,
@@ -55,7 +52,7 @@ internal class MapperProcessor(
             async { renderMapperCreator.start(resolver) }.await()
         } else emptyList()
 
-        if (options.getDependencyInjectionPlugin() == DependencyInjectionPlugin.KOIN) {
+        if (options.getDependencyInjectionPlugin() == DependencyInjectionPlugin.KOIN && options.includeKoinModule()) {
             koinModuleCreator.start(resolver)
         }
 

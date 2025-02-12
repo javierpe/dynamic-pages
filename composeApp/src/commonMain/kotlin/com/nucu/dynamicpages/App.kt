@@ -15,12 +15,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import com.nucu.dynamicpages.data.mappers.HomeContactResponseMapper
+import com.nucu.dynamicpages.data.mappers.HomeTestResponseMapper
 import com.nucu.dynamicpages.di.HomeDynamicPagesModule
-import com.nucu.dynamicpages.test.model.ContactResponse
-import com.nucu.dynamicpages.test.model.PhoneResponse
+import com.nucu.dynamicpages.test.model.TestResponse
 import com.nucu.dynamicpages.test.rule.MainModule
-import com.nucu.dynamicpages.test.rule.NameRule
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.KoinApplication
 import org.koin.compose.koinInject
@@ -45,8 +43,7 @@ fun App() {
 
 @Composable
 fun AppContent(modifier: Modifier = Modifier) {
-    val rule = koinInject<NameRule>()
-    val mapper = koinInject<HomeContactResponseMapper>()
+    val mapper2 = koinInject<HomeTestResponseMapper>()
 
     var showContent by remember { mutableStateOf(false) }
     Column(modifier, horizontalAlignment = Alignment.CenterHorizontally) {
@@ -56,12 +53,9 @@ fun AppContent(modifier: Modifier = Modifier) {
         AnimatedVisibility(showContent) {
             val greeting = remember { mutableStateOf("Loading...") }
             LaunchedEffect(Unit) {
-                greeting.value = mapper.mapToPhoneUi(
-                    contactResponse = ContactResponse(
-                        name = "Francisco",
-                        phone = PhoneResponse(
-                            country = "Mexico"
-                        )
+                greeting.value = mapper2.mapToTestUi(
+                    testResponse = TestResponse(
+                        name = "Javi"
                     )
                 ).toString()
             }
