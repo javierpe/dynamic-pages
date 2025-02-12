@@ -1,14 +1,16 @@
+@file:Suppress("TooManyFunctions")
 package com.nucu.ksp.common.extensions
 
 import com.google.devtools.ksp.symbol.KSAnnotated
 import com.google.devtools.ksp.symbol.KSAnnotation
 import com.google.devtools.ksp.symbol.KSClassDeclaration
 import com.google.devtools.ksp.symbol.KSDeclaration
-import com.google.devtools.ksp.symbol.KSPropertyDeclaration
 import com.google.devtools.ksp.symbol.KSType
 import com.google.devtools.ksp.symbol.KSValueArgument
 import com.google.devtools.ksp.validate
 import com.nucu.ksp.common.definitions.DefinitionNames
+import com.nucu.ksp.common.definitions.DefinitionNames.KEY_DEFAULT_SERIALIZER
+import com.nucu.ksp.common.definitions.DefinitionNames.KEY_INCLUDE_KOIN_MODULE
 import com.nucu.ksp.common.model.DependencyInjectionPlugin
 import com.squareup.kotlinpoet.AnnotationSpec
 import com.squareup.kotlinpoet.ClassName
@@ -119,20 +121,6 @@ fun Sequence<KSAnnotation>.filterByAnnotation(annotationName: String): Sequence<
 }
 
 /**
- * Find property by name.
- */
-fun Sequence<KSPropertyDeclaration>.findProperty(name: String): KSPropertyDeclaration? {
-    return this.firstOrNull { it.simpleName.getShortName() == name }
-}
-
-/**
- * Check if type is a collection or single.
- */
-fun KSDeclaration.isListType(): Boolean {
-    return qualifiedName?.getShortName() == "List"
-}
-
-/**
  * Return value of module prefix name parameter.
  */
 fun Map<String, String>.getModulePrefixName(): String {
@@ -149,5 +137,9 @@ fun Map<String, String>.getDependencyInjectionPlugin(): DependencyInjectionPlugi
 }
 
 fun Map<String, String>.includeDefaultSerializer(): Boolean {
-    return getOrDefault("include.default.serializer", "true").toBoolean()
+    return getOrDefault(KEY_DEFAULT_SERIALIZER, "true").toBoolean()
+}
+
+fun Map<String, String>.includeKoinModule(): Boolean {
+    return getOrDefault(KEY_INCLUDE_KOIN_MODULE, "true").toBoolean()
 }

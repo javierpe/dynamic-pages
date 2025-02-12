@@ -1,5 +1,5 @@
 [versions]
-dynamicPages = "1.0.4"
+dynamicPages = "1.0.5"
 agp = "8.8.0"
 android-compileSdk = "35"
 android-minSdk = "24"
@@ -13,8 +13,8 @@ ksp = "2.1.0-1.0.29"
 kotlinSerialization = "1.8.0"
 kotlinReflect = "2.1.0"
 kotlinPoet = "2.0.0"
-koin = "4.0.1"
-koin-annotations = "2.0.0-Beta2"
+koin = "4.0.2"
+koin-annotations = "2.0.0-RC1"
 vanniktech = "0.29.0"
 
 [libraries]
