@@ -128,6 +128,13 @@ fun Map<String, String>.getModulePrefixName(): String {
 }
 
 /**
+ * Check if type is a collection or single.
+ */
+fun KSDeclaration.isListType(): Boolean {
+    return qualifiedName?.getShortName() == "List"
+}
+
+/**
  * Return value of vertical name parameter.
  */
 fun Map<String, String>.getDependencyInjectionPlugin(): DependencyInjectionPlugin {

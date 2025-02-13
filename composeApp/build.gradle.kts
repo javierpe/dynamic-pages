@@ -146,6 +146,7 @@ ksp {
 dependencies {
     add("kspCommonMainMetadata", project(":dynamic-pages-processor"))
     add("kspCommonMainMetadata", project(":dynamic-pages-mapper-processor"))
+    add("kspCommonMainMetadata", project(":dynamic-pages-visitor-processor"))
 
     add("kspCommonMainMetadata", libs.koin.ksp.compiler)
 }

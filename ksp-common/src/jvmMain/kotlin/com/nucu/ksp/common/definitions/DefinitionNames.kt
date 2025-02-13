@@ -55,6 +55,11 @@ object DefinitionNames {
     const val MODULE_PREFIX = "DP_MODULE_PREFIX"
 
     /**
+     * The paging engine use case
+     */
+    const val PAGING_CLASS_NAME = "GetDynamicListPagingComponentUseCase"
+
+    /**
      * This key allows to create render mapper class.
      */
     const val ENGINE_KEY = "DP_RENDER_MAPPER_ENGINE"
