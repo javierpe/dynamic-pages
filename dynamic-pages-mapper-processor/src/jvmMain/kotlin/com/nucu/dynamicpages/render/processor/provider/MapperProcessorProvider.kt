@@ -26,9 +26,12 @@ class MapperProcessorProvider : SymbolProcessorProvider {
                 environment.logger,
                 environment.options
             ),
-            koinModuleCreator = KoinModuleCreator(),
-            options = environment.options,
-            codeGenerator = environment.codeGenerator
+            koinModuleCreator = KoinModuleCreator(
+                logger = environment.logger,
+                codeGenerator = environment.codeGenerator,
+                options = environment.options
+            ),
+            options = environment.options
         )
     }
 }

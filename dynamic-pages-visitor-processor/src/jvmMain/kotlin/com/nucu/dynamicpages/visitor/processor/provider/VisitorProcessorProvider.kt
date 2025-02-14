@@ -26,9 +26,11 @@ class VisitorProcessorProvider : SymbolProcessorProvider {
                 environment.logger,
                 environment.options
             ),
-            options = environment.options,
-            koinModuleCreator = KoinModuleCreator(),
-            codeGenerator = environment.codeGenerator
+            koinModuleCreator = KoinModuleCreator(
+                logger = environment.logger,
+                codeGenerator = environment.codeGenerator,
+                options = environment.options
+            )
         )
     }
 }
