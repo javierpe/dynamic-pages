@@ -16,12 +16,14 @@ import com.nucu.ksp.common.definitions.DefinitionNames
 import com.nucu.ksp.common.extensions.create
 import com.nucu.ksp.common.extensions.filterByAnnotation
 import com.nucu.ksp.common.extensions.getDependencies
+import com.nucu.ksp.common.extensions.getDependencyInjectionPlugin
 import com.nucu.ksp.common.extensions.getModulePrefixName
 import com.nucu.ksp.common.extensions.getValueArgOf
 import com.nucu.ksp.common.extensions.isListType
 import com.nucu.ksp.common.extensions.logLooking
 import com.nucu.ksp.common.extensions.logNotFound
 import com.nucu.ksp.common.extensions.toParameterName
+import com.nucu.ksp.common.model.DependencyInjectionPlugin
 import com.squareup.kotlinpoet.ANY
 import com.squareup.kotlinpoet.ClassName
 import com.squareup.kotlinpoet.CodeBlock
@@ -34,7 +36,6 @@ import com.squareup.kotlinpoet.TypeSpec
 import com.squareup.kotlinpoet.ksp.toClassName
 
 private const val PROCESS_NAME = "VisitorModuleCreator"
-private const val PACKAGE_JAVAX_INJECT = "javax.inject.Inject"
 
 class VisitorModuleCreator(
     private val codeGenerator: CodeGenerator,
@@ -144,8 +145,11 @@ class VisitorModuleCreator(
             }
 
             val constructor = FunSpec.constructorBuilder()
-                .addAnnotation(ClassName.bestGuess(PACKAGE_JAVAX_INJECT))
                 .apply {
+                    if (options.getDependencyInjectionPlugin() == DependencyInjectionPlugin.INJECT) {
+                        addAnnotation(ClassName.bestGuess(DefinitionNames.PACKAGE_JAVAX_INJECT))
+                    }
+
                     visitableData.forEach { data ->
                         val parameter = ParameterSpec.Companion.builder(
                             data.visitorClass.toParameterName(),
@@ -162,6 +166,13 @@ class VisitorModuleCreator(
                 TypeSpec.classBuilder(fileName)
                     .addProperties(properties)
                     .primaryConstructor(constructor)
+                    .apply {
+                        if (options.getDependencyInjectionPlugin() == DependencyInjectionPlugin.KOIN) {
+                            addAnnotation(
+                                ClassName.bestGuess(DefinitionNames.PACKAGE_KOIN_FACTORY)
+                            )
+                        }
+                    }
                     .addFunction(
                         FunSpec.builder("invoke")
                             .returns(ANY)

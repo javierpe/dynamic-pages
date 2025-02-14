@@ -17,7 +17,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import com.nucu.dynamicpages.data.mappers.HomeTestResponseMapper
 import com.nucu.dynamicpages.di.HomeDynamicPagesModule
-import com.nucu.dynamicpages.test.model.TestResponse
+import com.nucu.dynamicpages.test.model.response.TestResponse
 import com.nucu.dynamicpages.test.rule.MainModule
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.KoinApplication

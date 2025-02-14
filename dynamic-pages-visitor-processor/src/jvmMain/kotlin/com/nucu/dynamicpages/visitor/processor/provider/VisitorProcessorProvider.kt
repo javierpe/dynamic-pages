@@ -6,6 +6,7 @@ import com.google.devtools.ksp.processing.SymbolProcessorProvider
 import com.nucu.dynamicpages.visitor.processor.creators.PaginateModuleCreator
 import com.nucu.dynamicpages.visitor.processor.creators.VisitorModuleCreator
 import com.nucu.dynamicpages.visitor.processor.processors.VisitorProcessor
+import com.nucu.ksp.common.creator.KoinModuleCreator
 
 /**
  * The main entry of KSP.
@@ -24,7 +25,10 @@ class VisitorProcessorProvider : SymbolProcessorProvider {
                 environment.codeGenerator,
                 environment.logger,
                 environment.options
-            )
+            ),
+            options = environment.options,
+            koinModuleCreator = KoinModuleCreator(),
+            codeGenerator = environment.codeGenerator
         )
     }
 }

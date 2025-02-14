@@ -15,10 +15,12 @@ import com.nucu.ksp.common.definitions.DefinitionNames
 import com.nucu.ksp.common.extensions.create
 import com.nucu.ksp.common.extensions.filterByAnnotation
 import com.nucu.ksp.common.extensions.getDependencies
+import com.nucu.ksp.common.extensions.getDependencyInjectionPlugin
 import com.nucu.ksp.common.extensions.getModulePrefixName
 import com.nucu.ksp.common.extensions.isListType
 import com.nucu.ksp.common.extensions.logLooking
 import com.nucu.ksp.common.extensions.logNotFound
+import com.nucu.ksp.common.model.DependencyInjectionPlugin
 import com.squareup.kotlinpoet.ANY
 import com.squareup.kotlinpoet.ClassName
 import com.squareup.kotlinpoet.CodeBlock
@@ -29,13 +31,13 @@ import com.squareup.kotlinpoet.TypeSpec
 import com.squareup.kotlinpoet.ksp.toClassName
 
 private const val PROCESS_NAME = "PaginateModuleCreator"
-private const val PACKAGE_JAVAX_INJECT = "javax.inject.Inject"
 
 class PaginateModuleCreator(
     private val codeGenerator: CodeGenerator,
     private val logger: KSPLogger,
     private val options: Map<String, String>
 ) : ModuleCreatorContract {
+
     override suspend fun start(resolver: Resolver): List<KSAnnotated> {
         return Paginate::class.qualifiedName?.let { name ->
             logger.logLooking(PROCESS_NAME)
@@ -98,12 +100,23 @@ class PaginateModuleCreator(
             }
 
             val constructor = FunSpec.constructorBuilder()
-                .addAnnotation(ClassName.bestGuess(PACKAGE_JAVAX_INJECT))
+                .apply {
+                    if (options.getDependencyInjectionPlugin() == DependencyInjectionPlugin.INJECT) {
+                        addAnnotation(ClassName.bestGuess(DefinitionNames.PACKAGE_JAVAX_INJECT))
+                    }
+                }
                 .build()
 
             addType(
                 TypeSpec.classBuilder(name)
                     .primaryConstructor(constructor)
+                    .apply {
+                        if (options.getDependencyInjectionPlugin() == DependencyInjectionPlugin.KOIN) {
+                            addAnnotation(
+                                ClassName.bestGuess(DefinitionNames.PACKAGE_KOIN_FACTORY)
+                            )
+                        }
+                    }
                     .addFunction(
                         FunSpec.builder("invoke")
                             .returns(ANY)

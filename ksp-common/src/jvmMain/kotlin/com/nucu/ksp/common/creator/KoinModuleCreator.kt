@@ -1,34 +1,29 @@
-package com.nucu.dynamicpages.render.processor.creators.mapper
+package com.nucu.ksp.common.creator
 
 import com.google.devtools.ksp.processing.CodeGenerator
 import com.google.devtools.ksp.processing.Dependencies
-import com.google.devtools.ksp.processing.KSPLogger
-import com.google.devtools.ksp.processing.Resolver
-import com.google.devtools.ksp.symbol.KSAnnotated
-import com.nucu.ksp.common.contract.ModuleCreatorContract
 import com.nucu.ksp.common.definitions.DefinitionNames
 import com.nucu.ksp.common.extensions.create
-import com.nucu.ksp.common.extensions.getModulePrefixName
-import com.nucu.ksp.common.extensions.logFinishProcess
-import com.nucu.ksp.common.extensions.logStartProcess
 import com.squareup.kotlinpoet.AnnotationSpec
 import com.squareup.kotlinpoet.ClassName
 import com.squareup.kotlinpoet.CodeBlock
 import com.squareup.kotlinpoet.FileSpec
 import com.squareup.kotlinpoet.TypeSpec
 
-private const val PROCESSOR_NAME = "KoinModuleCreator"
+/**
+ * Class that creates a Koin module.
+ */
+class KoinModuleCreator {
 
-class KoinModuleCreator(
-    private val codeGenerator: CodeGenerator,
-    private val logger: KSPLogger,
-    private val options: Map<String, String>
-) : ModuleCreatorContract {
-
-    override suspend fun start(resolver: Resolver): List<KSAnnotated> {
-        logger.logStartProcess(PROCESSOR_NAME)
-        val name = options.getModulePrefixName() + DefinitionNames.KOIN_MODULE_NAME
-
+    /**
+     * Create a Koin module with specific name.
+     * @param name The name of the module.
+     * @param codeGenerator The code generator.
+     */
+    fun create(
+        codeGenerator: CodeGenerator,
+        name: String
+    ) {
         val fileSpec = FileSpec.builder(
             packageName = DefinitionNames.PACKAGE_DI,
             fileName = name
@@ -55,8 +50,5 @@ class KoinModuleCreator(
         }
 
         fileSpec.create(codeGenerator, Dependencies.ALL_FILES)
-        logger.logFinishProcess()
-
-        return emptyList()
     }
 }

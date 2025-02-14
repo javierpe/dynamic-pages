@@ -78,6 +78,7 @@ class RenderMapperCreator(
         } ?: emptyList()
     }
 
+    @Suppress("LongMethod")
     private fun create(
         data: List<MapperWithRenderModel>,
         dependencies: Dependencies
@@ -114,7 +115,10 @@ class RenderMapperCreator(
                             .apply {
                                 addStatement("mapOf(")
                                 data.forEach { model ->
-                                    addImport(model.classToMap.toClassName().packageName, model.classToMap.toClassName().simpleName)
+                                    addImport(
+                                        model.classToMap.toClassName().packageName,
+                                        model.classToMap.toClassName().simpleName
+                                    )
                                     val castResource = "(resource as ${model.classToMap.simpleName.getShortName()})"
 
                                     model.renderTypes.forEach { render ->

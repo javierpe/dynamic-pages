@@ -142,7 +142,7 @@ class MapperCreator(
         logger.logFinishProcess()
     }
 
-    @Suppress("NestedBlockDepth")
+    @Suppress("NestedBlockDepth", "LongMethod")
     private fun createConstructor(
         currentClassName: String,
         data: Map.Entry<KSType, List<KSClassDeclaration>>,
@@ -169,9 +169,23 @@ class MapperCreator(
                             injectMapper(options.getModulePrefixName(), mapperDeclaration, properties)
                         }
                         // Check if only has a mapper, the priority is rule annotation.
-                        else if (item.typeIsMapper(allSymbols) && item.annotations.filteredByRuleAnnotation().toList().isEmpty()) {
-                            val mapperAn = item.type.resolve().declaration.annotations.filteredByMapperAnnotation().first()
-                            val mapperDeclaration = mapperAn.arguments.filterByParentProp().first().asType().declaration as KSClassDeclaration
+                        else if (
+                            item.typeIsMapper(allSymbols) &&
+                            item.annotations.filteredByRuleAnnotation().toList().isEmpty()
+                            ) {
+
+                            val mapperAn = item.type
+                                .resolve()
+                                .declaration
+                                .annotations
+                                .filteredByMapperAnnotation()
+                                .first()
+
+                            val mapperDeclaration = mapperAn.arguments
+                                .filterByParentProp()
+                                .first()
+                                .asType()
+                                .declaration as KSClassDeclaration
                             if (mapperDeclaration.withSuffixName() != currentClassName) {
                                 injectMapper(options.getModulePrefixName(), mapperDeclaration, properties)
                             }
@@ -210,6 +224,7 @@ class MapperCreator(
         )
     }
 
+    @Suppress("LongParameterList", "LongMethod")
     private fun createFunction(
         currentClassName: String,
         mainDependencies: MainDependencies,
@@ -222,11 +237,15 @@ class MapperCreator(
 
         fileSpec.apply {
             val args = ksClassDeclaration.annotations.filteredByMapperAnnotation().first().arguments
-            val deepNode = args.first { it.name?.getShortName() == MAPPER_ANNOTATION_PARAM_DEEP_NODE_NAME }.value?.toString()
+            val deepNode = args
+                .first { it.name?.getShortName() == MAPPER_ANNOTATION_PARAM_DEEP_NODE_NAME }
+                .value
+                ?.toString()
 
             val consumerType = args.single { it.name?.asString() == MAPPER_ANNOTATION_PARAM_NAME }.value as KSType
             val responseModel = (
-                ksClassDeclaration.annotations.filteredByMapperAnnotation().firstOrNull()?.arguments?.first()?.value as? KSType
+                ksClassDeclaration.annotations.filteredByMapperAnnotation()
+                    .firstOrNull()?.arguments?.first()?.value as? KSType
                 )?.toTypeName()
             val returnType = ksClassDeclaration.asType(emptyList())
 
@@ -239,8 +258,19 @@ class MapperCreator(
                 val originProps = (consumerType.declaration as KSClassDeclaration).getAllProperties().toList()
                 val origin = originProps.firstOrNull { prop -> prop.toString() == item.toString() }
 
-                val fromProp = item.annotations.filteredByLinkedFromAnnotation().firstOrNull()?.arguments?.firstOrNull()?.value as? String
-                val ruleProp = (item.annotations.filteredByRuleAnnotation().firstOrNull()?.arguments?.firstOrNull()?.value as? KSType)?.declaration
+                val fromProp = item.annotations
+                    .filteredByLinkedFromAnnotation()
+                    .firstOrNull()
+                    ?.arguments
+                    ?.firstOrNull()
+                    ?.value as? String
+
+                val ruleProp = (item.annotations
+                    .filteredByRuleAnnotation()
+                    .firstOrNull()
+                    ?.arguments
+                    ?.firstOrNull()
+                    ?.value as? KSType)?.declaration
 
                 properties.add(
                     MapperModel(

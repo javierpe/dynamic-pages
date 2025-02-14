@@ -1,4 +1,4 @@
-package com.nucu.dynamicpages.test.model
+package com.nucu.dynamicpages.test.model.response
 
 import com.nucu.dynamicpages.processor.annotations.render.RenderModel
 import com.nucu.dynamicpages.test.RenderType
