@@ -9,17 +9,6 @@ import com.google.devtools.ksp.symbol.KSClassDeclaration
 import com.google.devtools.ksp.symbol.KSType
 import com.google.devtools.ksp.validate
 import com.nucu.dynamicpages.processor.annotations.mapper.Mapper
-import com.nucu.ksp.common.contract.ModuleCreatorContract
-import com.nucu.ksp.common.definitions.DefinitionNames
-import com.nucu.ksp.common.extensions.create
-import com.nucu.ksp.common.extensions.getDependencies
-import com.nucu.ksp.common.extensions.getValidSymbols
-import com.nucu.ksp.common.extensions.getModulePrefixName
-import com.nucu.ksp.common.extensions.logFinishProcess
-import com.nucu.ksp.common.extensions.logLooking
-import com.nucu.ksp.common.extensions.logNotFound
-import com.nucu.ksp.common.extensions.logStartProcess
-import com.nucu.ksp.common.extensions.toParameterName
 import com.nucu.dynamicpages.render.processor.data.extensions.asType
 import com.nucu.dynamicpages.render.processor.data.extensions.filterByParentProp
 import com.nucu.dynamicpages.render.processor.data.extensions.filterByRuleProp
@@ -34,7 +23,18 @@ import com.nucu.dynamicpages.render.processor.data.extensions.typeOfListHasMappe
 import com.nucu.dynamicpages.render.processor.data.extensions.withSuffixName
 import com.nucu.dynamicpages.render.processor.data.models.MainDependencies
 import com.nucu.dynamicpages.render.processor.data.models.MapperModel
+import com.nucu.ksp.common.contract.ModuleCreatorContract
+import com.nucu.ksp.common.definitions.DefinitionNames
+import com.nucu.ksp.common.extensions.create
+import com.nucu.ksp.common.extensions.getDependencies
 import com.nucu.ksp.common.extensions.getDependencyInjectionPlugin
+import com.nucu.ksp.common.extensions.getModulePrefixName
+import com.nucu.ksp.common.extensions.getValidSymbols
+import com.nucu.ksp.common.extensions.logFinishProcess
+import com.nucu.ksp.common.extensions.logLooking
+import com.nucu.ksp.common.extensions.logNotFound
+import com.nucu.ksp.common.extensions.logStartProcess
+import com.nucu.ksp.common.extensions.toParameterName
 import com.nucu.ksp.common.model.DependencyInjectionPlugin
 import com.squareup.kotlinpoet.ClassName
 import com.squareup.kotlinpoet.CodeBlock
@@ -172,7 +172,7 @@ class MapperCreator(
                         else if (
                             item.typeIsMapper(allSymbols) &&
                             item.annotations.filteredByRuleAnnotation().toList().isEmpty()
-                            ) {
+                        ) {
 
                             val mapperAn = item.type
                                 .resolve()
@@ -208,6 +208,13 @@ class MapperCreator(
                                             )
                                                 .initializer(rule.toParameterName())
                                                 .addModifiers(KModifier.PRIVATE)
+                                                .apply {
+                                                    if (options.getDependencyInjectionPlugin() == DependencyInjectionPlugin.KOIN) {
+                                                        addAnnotation(
+                                                            ClassName.bestGuess(DefinitionNames.PACKAGE_KOIN_PROVIDED)
+                                                        )
+                                                    }
+                                                }
                                                 .build()
                                         )
                                     }
@@ -265,12 +272,14 @@ class MapperCreator(
                     ?.firstOrNull()
                     ?.value as? String
 
-                val ruleProp = (item.annotations
-                    .filteredByRuleAnnotation()
-                    .firstOrNull()
-                    ?.arguments
-                    ?.firstOrNull()
-                    ?.value as? KSType)?.declaration
+                val ruleProp = (
+                    item.annotations
+                        .filteredByRuleAnnotation()
+                        .firstOrNull()
+                        ?.arguments
+                        ?.firstOrNull()
+                        ?.value as? KSType
+                    )?.declaration
 
                 properties.add(
                     MapperModel(

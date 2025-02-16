@@ -78,5 +78,7 @@ object DefinitionNames {
 
     const val PACKAGE_KOIN_MODULE = "org.koin.core.annotation.Module"
 
+    const val PACKAGE_KOIN_PROVIDED = "org.koin.core.annotation.Provided"
+
     const val KOIN_DYNAMIC_PAGES_MODULE_NAME = "DynamicPagesModule"
 }

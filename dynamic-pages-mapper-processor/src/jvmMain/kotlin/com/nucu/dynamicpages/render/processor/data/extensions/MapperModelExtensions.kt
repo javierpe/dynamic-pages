@@ -7,9 +7,9 @@ import com.google.devtools.ksp.symbol.KSPropertyDeclaration
 import com.google.devtools.ksp.symbol.KSType
 import com.google.devtools.ksp.symbol.KSTypeAlias
 import com.google.devtools.ksp.symbol.Nullability
-import com.nucu.ksp.common.extensions.toParameterName
 import com.nucu.dynamicpages.render.processor.data.models.DeepNodeProperty
 import com.nucu.dynamicpages.render.processor.data.models.MapperModel
+import com.nucu.ksp.common.extensions.toParameterName
 
 private const val PACKAGE_OF_LAZY_MAPPER = "com.nucu.dynamicpages.render.processor.core.utils.LazyMapper"
 

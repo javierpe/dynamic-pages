@@ -3,6 +3,7 @@ package com.nucu.dynamicpages.test.model.response
 import com.nucu.dynamicpages.processor.annotations.visitor.Paginate
 import com.nucu.dynamicpages.processor.annotations.visitor.VisitableProperty
 import com.nucu.dynamicpages.processor.annotations.visitor.Visitor
+import org.koin.core.annotation.Factory
 
 data class CarouselResponse(
     val id: String,
@@ -17,6 +18,7 @@ data class CarouselItem(
     val name: String
 )
 
+@Factory
 class CarouselVisitor : Visitor<CarouselItem, CarouselItem> {
     override suspend fun visitValue(updated: Any, old: CarouselItem): CarouselItem {
         return if ((updated as CarouselItem).id == old.id) {
