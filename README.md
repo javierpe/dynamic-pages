@@ -2,7 +2,7 @@
 
 
 
-[![version](https://img.shields.io/badge/version-1.0.2-yellow.svg)](https://semver.org)
+[![version](https://img.shields.io/badge/version-1.1.0-yellow.svg)](https://semver.org)
 [![Kotlin](https://img.shields.io/badge/Kotlin-2.1.0-blue.svg?style=flat&logo=kotlin)](https://kotlinlang.org)
 [![Apache 2 License](https://img.shields.io/github/license/InsertKoinIO/koin)](https://github.com/InsertKoinIO/koin/blob/main/LICENSE.txt)
 

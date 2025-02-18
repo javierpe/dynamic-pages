@@ -55,6 +55,11 @@ object DefinitionNames {
     const val MODULE_PREFIX = "DP_MODULE_PREFIX"
 
     /**
+     * The paging engine use case
+     */
+    const val PAGING_CLASS_NAME = "GetDynamicListPagingComponentUseCase"
+
+    /**
      * This key allows to create render mapper class.
      */
     const val ENGINE_KEY = "DP_RENDER_MAPPER_ENGINE"
@@ -73,5 +78,7 @@ object DefinitionNames {
 
     const val PACKAGE_KOIN_MODULE = "org.koin.core.annotation.Module"
 
-    const val KOIN_MODULE_NAME = "DynamicPagesModule"
+    const val PACKAGE_KOIN_PROVIDED = "org.koin.core.annotation.Provided"
+
+    const val KOIN_DYNAMIC_PAGES_MODULE_NAME = "DynamicPagesModule"
 }

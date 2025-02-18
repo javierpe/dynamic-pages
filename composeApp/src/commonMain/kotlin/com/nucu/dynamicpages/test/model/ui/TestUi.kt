@@ -1,8 +1,9 @@
-package com.nucu.dynamicpages.test.model
+package com.nucu.dynamicpages.test.model.ui
 
 import com.nucu.dynamicpages.processor.annotations.mapper.Mapper
 import com.nucu.dynamicpages.processor.annotations.mapper.Rule
 import com.nucu.dynamicpages.test.RenderType
+import com.nucu.dynamicpages.test.model.response.TestResponse
 import com.nucu.dynamicpages.test.rule.NameRule
 
 @Mapper(

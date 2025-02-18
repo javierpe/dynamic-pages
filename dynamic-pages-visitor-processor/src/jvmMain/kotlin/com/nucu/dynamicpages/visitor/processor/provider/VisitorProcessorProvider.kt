@@ -1,27 +1,27 @@
-package com.nucu.dynamicpages.render.processor.provider
+package com.nucu.dynamicpages.visitor.processor.provider
 
 import com.google.devtools.ksp.processing.SymbolProcessor
 import com.google.devtools.ksp.processing.SymbolProcessorEnvironment
 import com.google.devtools.ksp.processing.SymbolProcessorProvider
-import com.nucu.dynamicpages.render.processor.creators.mapper.MapperCreator
-import com.nucu.dynamicpages.render.processor.creators.mapper.RenderMapperCreator
-import com.nucu.dynamicpages.render.processor.processors.MapperProcessor
+import com.nucu.dynamicpages.visitor.processor.creators.PaginateModuleCreator
+import com.nucu.dynamicpages.visitor.processor.creators.VisitorModuleCreator
+import com.nucu.dynamicpages.visitor.processor.processors.VisitorProcessor
 import com.nucu.ksp.common.creator.KoinModuleCreator
 
 /**
  * The main entry of KSP.
  */
-class MapperProcessorProvider : SymbolProcessorProvider {
+class VisitorProcessorProvider : SymbolProcessorProvider {
 
     override fun create(environment: SymbolProcessorEnvironment): SymbolProcessor {
-        return MapperProcessor(
+        return VisitorProcessor(
             logger = environment.logger,
-            mapperCreator = MapperCreator(
+            visitorModuleCreator = VisitorModuleCreator(
                 environment.codeGenerator,
                 environment.logger,
                 environment.options
             ),
-            renderMapperCreator = RenderMapperCreator(
+            paginateModuleCreator = PaginateModuleCreator(
                 environment.codeGenerator,
                 environment.logger,
                 environment.options
@@ -30,8 +30,7 @@ class MapperProcessorProvider : SymbolProcessorProvider {
                 logger = environment.logger,
                 codeGenerator = environment.codeGenerator,
                 options = environment.options
-            ),
-            options = environment.options
+            )
         )
     }
 }

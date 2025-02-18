@@ -7,21 +7,21 @@ import com.google.devtools.ksp.processing.Resolver
 import com.google.devtools.ksp.symbol.KSAnnotated
 import com.google.devtools.ksp.validate
 import com.nucu.dynamicpages.processor.annotations.mapper.Mapper
-import com.nucu.ksp.common.contract.ModuleCreatorContract
-import com.nucu.ksp.common.definitions.DefinitionNames
-import com.nucu.ksp.common.extensions.create
-import com.nucu.ksp.common.extensions.getDependencies
-import com.nucu.ksp.common.extensions.getValidSymbols
-import com.nucu.ksp.common.extensions.getModulePrefixName
-import com.nucu.ksp.common.extensions.logFinishProcess
-import com.nucu.ksp.common.extensions.logLooking
-import com.nucu.ksp.common.extensions.logNotFound
-import com.nucu.ksp.common.extensions.logStartProcess
 import com.nucu.dynamicpages.render.processor.data.extensions.extractMappersWithRenders
 import com.nucu.dynamicpages.render.processor.data.extensions.withSuffixName
 import com.nucu.dynamicpages.render.processor.data.models.MainDependencies
 import com.nucu.dynamicpages.render.processor.data.models.MapperWithRenderModel
+import com.nucu.ksp.common.contract.ModuleCreatorContract
+import com.nucu.ksp.common.definitions.DefinitionNames
+import com.nucu.ksp.common.extensions.create
+import com.nucu.ksp.common.extensions.getDependencies
 import com.nucu.ksp.common.extensions.getDependencyInjectionPlugin
+import com.nucu.ksp.common.extensions.getModulePrefixName
+import com.nucu.ksp.common.extensions.getValidSymbols
+import com.nucu.ksp.common.extensions.logFinishProcess
+import com.nucu.ksp.common.extensions.logLooking
+import com.nucu.ksp.common.extensions.logNotFound
+import com.nucu.ksp.common.extensions.logStartProcess
 import com.nucu.ksp.common.model.DependencyInjectionPlugin
 import com.squareup.kotlinpoet.ANY
 import com.squareup.kotlinpoet.ClassName
@@ -78,6 +78,7 @@ class RenderMapperCreator(
         } ?: emptyList()
     }
 
+    @Suppress("LongMethod")
     private fun create(
         data: List<MapperWithRenderModel>,
         dependencies: Dependencies
@@ -107,14 +108,16 @@ class RenderMapperCreator(
                     ).copy(suspending = true)
                 )
 
-
                 val mapperMapProperty = PropertySpec.builder(MAPPER_MAP_VALUE_NAME, mapperMapType)
                     .initializer(
                         CodeBlock.builder()
                             .apply {
                                 addStatement("mapOf(")
                                 data.forEach { model ->
-                                    addImport(model.classToMap.toClassName().packageName, model.classToMap.toClassName().simpleName)
+                                    addImport(
+                                        model.classToMap.toClassName().packageName,
+                                        model.classToMap.toClassName().simpleName
+                                    )
                                     val castResource = "(resource as ${model.classToMap.simpleName.getShortName()})"
 
                                     model.renderTypes.forEach { render ->
@@ -208,6 +211,16 @@ class RenderMapperCreator(
                                 )
                                     .initializer(model.ignoreRuleClass.withSuffixName(true, RULE_SUFFIX_NAME))
                                     .addModifiers(KModifier.PRIVATE)
+                                    .apply {
+                                        if (
+                                            options.getDependencyInjectionPlugin() ==
+                                            DependencyInjectionPlugin.KOIN
+                                        ) {
+                                            addAnnotation(
+                                                ClassName.bestGuess(DefinitionNames.PACKAGE_KOIN_PROVIDED)
+                                            )
+                                        }
+                                    }
                                     .build()
                             )
                         }

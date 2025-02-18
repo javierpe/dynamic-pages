@@ -2,9 +2,9 @@ package com.nucu.dynamicpages.render.processor.data.extensions
 
 import com.google.devtools.ksp.symbol.KSClassDeclaration
 import com.google.devtools.ksp.symbol.KSType
-import com.nucu.ksp.common.extensions.getValueArgOf
 import com.nucu.dynamicpages.render.processor.data.models.MapperWithOriginModel
 import com.nucu.dynamicpages.render.processor.data.models.MapperWithRenderModel
+import com.nucu.ksp.common.extensions.getValueArgOf
 import com.squareup.kotlinpoet.ksp.toClassName
 
 private const val RENDER_MODEL_ANNOTATION_PARENT_PARAM = "parent"

@@ -1,13 +1,12 @@
-package com.nucu.dynamicpages.render.processor.processors
+package com.nucu.dynamicpages.visitor.processor.processors
 
 import com.google.devtools.ksp.processing.KSPLogger
 import com.google.devtools.ksp.processing.Resolver
 import com.google.devtools.ksp.processing.SymbolProcessor
 import com.google.devtools.ksp.symbol.KSAnnotated
-import com.nucu.dynamicpages.render.processor.creators.mapper.MapperCreator
-import com.nucu.dynamicpages.render.processor.creators.mapper.RenderMapperCreator
+import com.nucu.dynamicpages.visitor.processor.creators.PaginateModuleCreator
+import com.nucu.dynamicpages.visitor.processor.creators.VisitorModuleCreator
 import com.nucu.ksp.common.creator.KoinModuleCreator
-import com.nucu.ksp.common.definitions.DefinitionNames.ENGINE_KEY
 import com.nucu.ksp.common.extensions.logEndProcessor
 import com.nucu.ksp.common.extensions.logStartProcessor
 import kotlinx.coroutines.async
@@ -15,18 +14,19 @@ import kotlinx.coroutines.runBlocking
 import kotlin.time.measureTime
 import kotlin.time.toJavaDuration
 
-private const val PROCESSOR_NAME = "Mapper Processor"
+private const val PROCESSOR_NAME = "Visitor Processor"
 
-internal class MapperProcessor(
+internal class VisitorProcessor(
     private val logger: KSPLogger,
-    private val mapperCreator: MapperCreator,
-    private val renderMapperCreator: RenderMapperCreator,
-    private val koinModuleCreator: KoinModuleCreator,
-    private val options: Map<String, String>,
+    private val visitorModuleCreator: VisitorModuleCreator,
+    private val paginateModuleCreator: PaginateModuleCreator,
+    private val koinModuleCreator: KoinModuleCreator
 ) : SymbolProcessor {
 
     override fun process(resolver: Resolver): List<KSAnnotated> {
+
         logger.logStartProcessor(PROCESSOR_NAME)
+
         val unableToProcess = mutableListOf<KSAnnotated>()
 
         val elapsedTime = measureTime {
@@ -40,17 +40,16 @@ internal class MapperProcessor(
     private fun make(
         resolver: Resolver,
     ): List<KSAnnotated> = runBlocking {
-        val processRenderMapperClass = options.getOrDefault(ENGINE_KEY, "false").toBoolean()
-        logger.warn("$ENGINE_KEY: $processRenderMapperClass")
+        val processedVisitors = async {
+            visitorModuleCreator.start(resolver)
+        }.await()
 
-        val processedMappers = async { mapperCreator.start(resolver) }.await()
-
-        val processedRenderMappers = if (processRenderMapperClass) {
-            async { renderMapperCreator.start(resolver) }.await()
-        } else emptyList()
+        val processedPaginationVisitors = async {
+            paginateModuleCreator.start(resolver)
+        }.await()
 
         async { koinModuleCreator.create() }.await()
 
-        processedMappers + processedRenderMappers
+        processedVisitors + processedPaginationVisitors
     }
 }
