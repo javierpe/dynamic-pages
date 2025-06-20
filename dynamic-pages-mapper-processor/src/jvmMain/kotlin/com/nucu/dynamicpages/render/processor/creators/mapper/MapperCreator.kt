@@ -304,7 +304,9 @@ class MapperCreator(
 
             // Add necessary imports.
             addImport("", names = rules.map { it.toString() })
-            addImport("", names = listOf(responseModel.toString()))
+            if (responseModel != null) {
+                addImport("", names = listOf(responseModel.toString()))
+            }
 
             val returnPropList = properties.map { model ->
                 val newDeepNode = model.fromDeepNode ?: deepNode.orEmpty()
